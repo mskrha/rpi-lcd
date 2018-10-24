@@ -29,8 +29,8 @@ type LCD struct {
 	device    *i2c.Device
 }
 
-func New() *LCD {
-	return &LCD{}
+func New(in LCD) *LCD {
+	return &in
 }
 
 func (l *LCD) Open() (err error) {
