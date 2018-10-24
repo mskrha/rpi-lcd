@@ -58,6 +58,9 @@ func (l *LCD) Clear() error {
 }
 
 func (l *LCD) Print(row uint, msg string) error {
+	if len(msg) == 0 {
+		return nil
+	}
 	if uint(len(msg)) > l.Cols {
 		return errOutOfCols
 	}
