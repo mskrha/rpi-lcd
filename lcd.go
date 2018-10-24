@@ -33,7 +33,7 @@ func New(in LCD) *LCD {
 	return &in
 }
 
-func (l *LCD) Open() (err error) {
+func (l *LCD) open() (err error) {
 	l.device, err = i2c.Open(&i2c.Devfs{Dev: l.Bus}, l.Address)
 	return
 }
@@ -43,6 +43,9 @@ func (l *LCD) Close() {
 }
 
 func (l *LCD) Init() error {
+	if err := l.open(); err != nil {
+		return err
+	}
 	l.Backlight(true)
 	for _, b := range []byte{0x33, 0x32, 0x06, 0x0C, 0x28, 0x01} {
 		if err := l.write(b, modeCommand); err != nil {
