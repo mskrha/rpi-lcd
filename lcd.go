@@ -57,7 +57,7 @@ func (l *LCD) Clear() error {
 	return l.write(0x01, modeCommand)
 }
 
-func (l *LCD) Send(row uint, msg string) error {
+func (l *LCD) Print(row uint, msg string) error {
 	if len(msg) > int(l.Cols) {
 		return errOutOfCols
 	}
