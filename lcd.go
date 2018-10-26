@@ -17,16 +17,18 @@ const (
 var (
 	errOutOfRows = errors.New("Row out of range")
 	errOutOfCols = errors.New("Column out of range")
+
+	backlight = map[bool]byte{true: 0x08, false: 0x00}
 )
 
 type LCD struct {
-	Bus     string
-	Address int
-	Rows    uint
-	Cols    uint
+	Bus       string
+	Address   int
+	Rows      uint
+	Cols      uint
+	Backlight bool
 
-	backlight byte
-	device    *i2c.Device
+	device *i2c.Device
 }
 
 func New(in LCD) *LCD {
@@ -46,7 +48,6 @@ func (l *LCD) Init() error {
 	if err := l.open(); err != nil {
 		return err
 	}
-	l.Backlight(true)
 	for _, b := range []byte{0x33, 0x32, 0x06, 0x0C, 0x28, 0x01} {
 		if err := l.write(b, modeCommand); err != nil {
 			return err
@@ -94,17 +95,9 @@ func (l *LCD) Print(row uint, msg string) error {
 	return nil
 }
 
-func (l *LCD) Backlight(enabled bool) {
-	if enabled {
-		l.backlight = 0x08
-	} else {
-		l.backlight = 0x00
-	}
-}
-
 func (l *LCD) write(data, mode byte) error {
-	high := mode | (data & 0xF0) | l.backlight
-	low := mode | ((data << 4) & 0xF0) | l.backlight
+	high := mode | (data & 0xF0) | backlight[l.Backlight]
+	low := mode | ((data << 4) & 0xF0) | backlight[l.Backlight]
 
 	if err := l.device.Write([]byte{high}); err != nil {
 		return err
