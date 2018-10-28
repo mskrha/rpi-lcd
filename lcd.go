@@ -127,3 +127,26 @@ func (l *LCD) toggleEnable(data byte) error {
 	time.Sleep(delay)
 	return nil
 }
+
+func (l *LCD) moveCursor(row, col uint) error {
+	if row < 1 || row > l.Rows {
+		return errOutOfRows
+	}
+	if col > l.Cols {
+		return errOutOfCols
+	}
+	var line byte
+	switch row {
+	case 1:
+		line = 0x80
+	case 2:
+		line = 0xC0
+	case 3:
+		line = 0x94
+	case 4:
+		line = 0xD4
+	default:
+		return errOutOfRows
+	}
+	return l.write(0x80+(byte(col)+(line*0x40)), modeCommand)
+}
