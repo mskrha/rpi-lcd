@@ -61,30 +61,14 @@ func (l *LCD) Clear() error {
 	return l.write(0x01, modeCommand)
 }
 
-func (l *LCD) Print(row uint, msg string) error {
+func (l *LCD) Print(row, col uint, msg string) error {
 	if len(msg) == 0 {
 		return nil
 	}
-	if uint(len(msg)) > l.Cols {
+	if uint(len(msg))+col > l.Cols {
 		return errOutOfCols
 	}
-	if row > l.Rows {
-		return errOutOfRows
-	}
-	var line byte
-	switch row {
-	case 1:
-		line = 0x80
-	case 2:
-		line = 0xC0
-	case 3:
-		line = 0x94
-	case 4:
-		line = 0xD4
-	default:
-		return errOutOfRows
-	}
-	if err := l.write(line, modeCommand); err != nil {
+	if err := l.moveCursor(row, col); err != nil {
 		return err
 	}
 	for _, b := range []byte(msg) {
