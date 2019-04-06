@@ -122,15 +122,15 @@ func (l *LCD) moveCursor(row, col uint) error {
 	var line byte
 	switch row {
 	case 1:
-		line = 0x80
+		line = 0x00
 	case 2:
-		line = 0xC0
+		line = 0x40
 	case 3:
-		line = 0x94
+		line = 0x14
 	case 4:
-		line = 0xD4
+		line = 0x54
 	default:
 		return errOutOfRows
 	}
-	return l.write(0x80+(byte(col)+(line*0x40)), modeCommand)
+	return l.write(0x80|(byte(col)+line), modeCommand)
 }
