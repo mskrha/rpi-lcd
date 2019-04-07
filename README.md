@@ -39,3 +39,6 @@ func main() {
 	}
 }
 ```
+
+### Notes
+Inspired by the [Adafruit Liquid Crystal library](https://github.com/adafruit/Adafruit_LiquidCrystal).
