@@ -3,6 +3,8 @@
 ### Description
 Golang library for accessing I2C LCD screen connected to the RaspberryPi.
 
+Tested with [this](https://www.banggood.com/IICI2C-1602-Yellow-Green-Backlight-LCD-Display-Module-For-Arduino-p-950728.html) LCD.
+
 ### Installation
 `go get github.com/mskrha/rpi-lcd`
 
