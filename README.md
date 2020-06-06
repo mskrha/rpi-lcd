@@ -1,3 +1,5 @@
+[![Go Report Card](https://goreportcard.com/badge/github.com/mskrha/rpi-lcd)](https://goreportcard.com/report/github.com/mskrha/rpi-lcd)
+
 ## rpi-lcd
 
 ### Description
